@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class InscriptionPage extends StatelessWidget {
   late SharedPreferences prefs;
-   InscriptionPage({super.key});
+  InscriptionPage({super.key});
 
   static final TextEditingController txtLogin = TextEditingController();
   static final TextEditingController txtPassword = TextEditingController();
@@ -48,11 +48,10 @@ class InscriptionPage extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               minimumSize: const Size.fromHeight(50),
             ),
-            onPressed: () { _oninscri(context); },
-            child: const Text(
-              'Inscription',
-              style: TextStyle(fontSize: 22),
-            ),
+            onPressed: () {
+              _oninscri(context);
+            },
+            child: const Text('Inscription', style: TextStyle(fontSize: 22)),
           ),
           TextButton(
             child: const Text(
@@ -68,13 +67,18 @@ class InscriptionPage extends StatelessWidget {
       ),
     );
   }
-  Future<void> _oninscri(BuildContext context)async {
+
+  Future<void> _oninscri(BuildContext context) async {
     prefs = await SharedPreferences.getInstance();
-    if(!txtLogin.text.isEmpty && !txtPassword.text.isEmpty){
+    if (!txtLogin.text.isEmpty && !txtPassword.text.isEmpty) {
       await prefs.setString('login', txtLogin.text);
       await prefs.setString('password', txtPassword.text);
-  Navigator.pop(context);
-  Navigator.pushNamed(context, '/home');
-    }  
+      await prefs.setBool('connecte', true);
+      Navigator.pop(context);
+      Navigator.pushNamed(context, '/home');
+    } else {
+      const snackBar = SnackBar(content: Text('Id ou mot de passe vides'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 }

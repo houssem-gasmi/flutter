@@ -6,14 +6,20 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:tp1/main.dart';
 
 void main() {
-  testWidgets('Opens the inscription page', (WidgetTester tester) async {
-    await tester.pumpWidget(MyApp());
+  testWidgets('Opens the authentication page when disconnected', (
+    WidgetTester tester,
+  ) async {
+    SharedPreferences.setMockInitialValues(<String, Object>{});
 
-    expect(find.text('Inscription'), findsOneWidget);
-    expect(find.text("Page d'inscription"), findsOneWidget);
+    await tester.pumpWidget(MyApp());
+    await tester.pumpAndSettle();
+
+    expect(find.text('Authentification'), findsOneWidget);
+    expect(find.text('Page Authentification'), findsOneWidget);
   });
 }

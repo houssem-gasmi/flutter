@@ -75,10 +75,15 @@ class AuthentificationPage extends StatelessWidget {
     String log = prefs.getString('login') ?? '';
     String pwd = prefs.getString('password') ?? '';
 
-    print(txtLogin.text == log && txtPassword.text == pwd);
     if (txtLogin.text == log && txtPassword.text == pwd) {
+      await prefs.setBool('connecte', true);
       Navigator.pop(context);
       Navigator.pushNamed(context, '/home');
+    } else {
+      const snackBar = SnackBar(
+        content: Text('Vérifier votre Id et mot de passe'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 }
